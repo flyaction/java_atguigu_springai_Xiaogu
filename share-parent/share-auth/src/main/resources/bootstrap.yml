@@ -15,9 +15,11 @@ spring:
       discovery:
         # 服务注册地址
         server-addr: 127.0.0.1:8848
+        namespace:  8138c0fc-3ab8-4953-a20c-5e8d39bae240
       config:
         # 配置中心地址
         server-addr: 127.0.0.1:8848
+        namespace:  8138c0fc-3ab8-4953-a20c-5e8d39bae240
         # 配置文件格式
         file-extension: yml
         # 共享配置
