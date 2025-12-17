@@ -5,13 +5,14 @@
     <el-form ref="queryRef" :inline="true" label-width="68px">
       <el-form-item label="名称" prop="name">
         <el-input
+            v-model="queryParams.name"
             placeholder="请输入名称"
             clearable
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="Search">搜索</el-button>
-        <el-button icon="Refresh">重置</el-button>
+        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
@@ -90,7 +91,8 @@ const data = reactive({
   //定义搜索模型
   queryParams: {
     pageNum: 1,
-    pageSize: 2
+    pageSize: 2,
+    name: null
   }
 });
 //toRefs 是一个Vue3中提供的API，可将一个响应式对象转换为普通对象，其中属性变成了对原始对象属性的引用
@@ -104,6 +106,19 @@ function getList() {
     total.value = response.total;
     loading.value = false;
   });
+}
+
+/** 搜索按钮操作 */
+function handleQuery() {
+  getList();
+}
+
+/** 重置按钮操作 */
+function resetQuery() {
+  queryParams.value.pageNum = 1
+  queryParams.value.pageSize = 10
+  queryParams.value.name = null
+  handleQuery();
 }
 
 //执行查询柜机类型列表
