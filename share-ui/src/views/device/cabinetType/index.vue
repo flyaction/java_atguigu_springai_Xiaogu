@@ -2,7 +2,7 @@
   <div class="app-container">
 
     <!-- 搜索表单 -->
-    <el-form ref="queryRef" :inline="true" label-width="68px">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="名称" prop="name">
         <el-input
             v-model="queryParams.name"
@@ -40,6 +40,7 @@
             icon="Delete"
         >删除</el-button>
       </el-col>
+      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <!-- 数据展示表格 -->
@@ -124,6 +125,9 @@
 import { listCabinetType,addCabinetType, getCabinetType, updateCabinetType,delCabinetType } from "@/api/device/cabinetType";
 //引入ElMessage组件
 import {ElMessage,ElMessageBox} from "element-plus";
+const { proxy } = getCurrentInstance();
+//定义隐藏搜索控制模型
+const showSearch = ref(true);
 
 
 //定义分页列表数据模型
@@ -155,9 +159,12 @@ const data = reactive({
   //封装表单数据
   form: {},
   rules: {
-    powerBankNo: [
-      { required: true, message: "充电宝编号不能为空", trigger: "blur" }
-    ]
+    name: [
+      { required: true, message: "名称不能为空", trigger: "blur" }
+    ],
+    totalSlots: [
+      { required: true, message: "总插槽数量不能为空", trigger: "blur" }
+    ],
   }
 });
 //toRefs 是一个Vue3中提供的API，可将一个响应式对象转换为普通对象，其中属性变成了对原始对象属性的引用
@@ -180,9 +187,7 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-  queryParams.value.pageNum = 1
-  queryParams.value.pageSize = 10
-  queryParams.value.name = null
+  proxy.resetForm("queryRef");
   handleQuery();
 }
 
@@ -196,6 +201,7 @@ function reset() {
     status: null,
     remark: null
   };
+  proxy.resetForm("cabinetTypeRef");
 }
 
 // 新增按钮操作
@@ -224,19 +230,23 @@ function handleUpdate(row) {
 
 // 提交按钮
 function submitForm() {
-  if (form.value.id != null) {
-    updateCabinetType(form.value).then(response => {
-      ElMessage.success("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    addCabinetType(form.value).then(response => {
-      ElMessage.success("新增成功")
-      open.value = false;
-      getList();
-    });
-  }
+  proxy.$refs["cabinetTypeRef"].validate(valid => {
+    if (valid) {
+      if (form.value.id != null) {
+        updateCabinetType(form.value).then(response => {
+          proxy.$modal.msgSuccess("修改成功");
+          open.value = false;
+          getList();
+        });
+      } else {
+        addCabinetType(form.value).then(response => {
+          proxy.$modal.msgSuccess("新增成功");
+          open.value = false;
+          getList();
+        });
+      }
+    }
+  });
 }
 
 // 多选框选中数据
@@ -249,15 +259,11 @@ function handleSelectionChange(selection) {
 // 删除按钮操作
 function handleDelete(row) {
   const _ids = row.id || ids.value;
-  ElMessageBox.confirm('是否确认删除柜机类型编号为"' + _ids + '"的数据项？', "系统提示", {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: "warning",
-  }).then(function() {
+  proxy.$modal.confirm('是否确认删除柜机类型编号为"' + _ids + '"的数据项？').then(function() {
     return delCabinetType(_ids);
   }).then(() => {
     getList();
-    ElMessage.success("删除成功");
+    proxy.$modal.msgSuccess("删除成功");
   }).catch(() => {});
 }
 
