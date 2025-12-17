@@ -2,7 +2,7 @@
   <div class="app-container">
 
     <!-- 搜索表单 -->
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form ref="queryRef" :inline="true" label-width="68px"  v-show="showSearch">
       <el-form-item label="名称" prop="name">
         <el-input
             v-model="queryParams.name"
@@ -36,6 +36,7 @@
       <el-col :span="1.5">
         <el-button
             type="danger"
+            @click="handleDelete"
             plain
             icon="Delete"
         >删除</el-button>
@@ -57,20 +58,8 @@
       <el-table-column prop="createTime" label="创建时间" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button
-              type="success"
-              plain
-              icon="Edit"
-              :disabled="single"
-              @click="handleUpdate"
-          >修改</el-button>
-          <el-button
-              type="danger"
-              plain
-              icon="Delete"
-              :disabled="multiple"
-              @click="handleDelete"
-          >删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
+          <el-button link type="primary" icon="Delete">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -83,7 +72,7 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
     />
-    <!-- 新增或修改柜机类型对话框 -->
+
     <el-dialog :title="title" v-model="open" width="600px" append-to-body>
       <el-form ref="cabinetTypeRef" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="名称" prop="name">
@@ -115,8 +104,6 @@
         </div>
       </template>
     </el-dialog>
-
-
   </div>
 </template>
 
@@ -124,11 +111,8 @@
 //引入api接口
 import { listCabinetType,addCabinetType, getCabinetType, updateCabinetType,delCabinetType } from "@/api/device/cabinetType";
 //引入ElMessage组件
-import {ElMessage,ElMessageBox} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 const { proxy } = getCurrentInstance();
-//定义隐藏搜索控制模型
-const showSearch = ref(true);
-
 
 //定义分页列表数据模型
 const cabinetTypeList = ref([]);
@@ -136,7 +120,6 @@ const cabinetTypeList = ref([]);
 const total = ref(0);
 //加载数据时显示的动效控制模型
 const loading = ref(true);
-//弹框
 const open = ref(false);
 const title = ref("");
 //定义批量操作id列表模型
@@ -145,6 +128,8 @@ const ids = ref([]);
 const single = ref(true);
 //定义多选控制模型
 const multiple = ref(true);
+//定义隐藏搜索控制模型
+const showSearch = ref(true);
 
 //Vue 3 中的两种响应式数据绑定方式：reactive 和 ref
 //ref定义：基本数据类型，适用于简单的响应式数据
@@ -153,11 +138,12 @@ const data = reactive({
   //定义搜索模型
   queryParams: {
     pageNum: 1,
-    pageSize: 2,
-    name: null,
+    pageSize: 10,
+    name: null
   },
-  //封装表单数据
+
   form: {},
+
   rules: {
     name: [
       { required: true, message: "名称不能为空", trigger: "blur" }
@@ -168,7 +154,7 @@ const data = reactive({
   }
 });
 //toRefs 是一个Vue3中提供的API，可将一个响应式对象转换为普通对象，其中属性变成了对原始对象属性的引用
-const { queryParams,form,rules} = toRefs(data);
+const { queryParams, form, rules } = toRefs(data);
 
 /** 查询柜机类型列表 */
 function getList() {
@@ -267,8 +253,6 @@ function handleDelete(row) {
   }).catch(() => {});
 }
 
-
-
-//执行查询柜机类型列表
+//执行查询列表
 getList()
 </script>
