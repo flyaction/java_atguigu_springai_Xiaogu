@@ -8,3 +8,38 @@ export function listCabinetType(query) {
         params: query
     })
 }
+
+// 添加柜机类型
+export function addCabinetType(data) {
+    return request({
+        url: '/device/cabinetType',
+        method: 'post',
+        data: data
+    })
+}
+
+
+// 查询柜机类型详细
+export function getCabinetType(id) {
+    return request({
+        url: '/device/cabinetType/' + id,
+        method: 'get'
+    })
+}
+
+// 修改柜机类型
+export function updateCabinetType(data) {
+    return request({
+        url: '/device/cabinetType',
+        method: 'put',
+        data: data
+    })
+}
+
+// 删除柜机类型
+export function delCabinetType(id) {
+    return request({
+        url: '/device/cabinetType/' + id,
+        method: 'delete'
+    })
+}

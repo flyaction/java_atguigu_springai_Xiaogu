@@ -21,6 +21,7 @@
       <el-col :span="1.5">
         <el-button
             type="primary"
+            @click="handleAdd"
             plain
             icon="Plus"
         >新增</el-button>
@@ -42,7 +43,7 @@
     </el-row>
 
     <!-- 数据展示表格 -->
-    <el-table v-loading="loading" :data="cabinetTypeList">
+    <el-table v-loading="loading" :data="cabinetTypeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="名称" prop="name" width="150"/>
       <el-table-column label="总插槽数量" prop="totalSlots" width="110"/>
@@ -55,8 +56,20 @@
       <el-table-column prop="createTime" label="创建时间" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit">修改</el-button>
-          <el-button link type="primary" icon="Delete">删除</el-button>
+          <el-button
+              type="success"
+              plain
+              icon="Edit"
+              :disabled="single"
+              @click="handleUpdate"
+          >修改</el-button>
+          <el-button
+              type="danger"
+              plain
+              icon="Delete"
+              :disabled="multiple"
+              @click="handleDelete"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -69,13 +82,49 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
     />
+    <!-- 新增或修改柜机类型对话框 -->
+    <el-dialog :title="title" v-model="open" width="600px" append-to-body>
+      <el-form ref="cabinetTypeRef" :model="form" :rules="rules" label-width="120px">
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入名称" />
+        </el-form-item>
+        <el-form-item label="总插槽数量" prop="totalSlots">
+          <el-select
+              v-model="form.totalSlots"
+              class="m-2"
+              placeholder="请选择总插槽数量"
+              style="width: 100%"
+          >
+            <el-option
+                v-for="item in 20"
+                :key="item"
+                :label="item"
+                :value="item"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="描述" prop="description">
+          <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
+
 
   </div>
 </template>
 
 <script setup name="CabinetType">
 //引入api接口
-import { listCabinetType } from "@/api/device/cabinetType";
+import { listCabinetType,addCabinetType, getCabinetType, updateCabinetType,delCabinetType } from "@/api/device/cabinetType";
+//引入ElMessage组件
+import {ElMessage,ElMessageBox} from "element-plus";
+
 
 //定义分页列表数据模型
 const cabinetTypeList = ref([]);
@@ -83,6 +132,15 @@ const cabinetTypeList = ref([]);
 const total = ref(0);
 //加载数据时显示的动效控制模型
 const loading = ref(true);
+//弹框
+const open = ref(false);
+const title = ref("");
+//定义批量操作id列表模型
+const ids = ref([]);
+//定义单选控制模型
+const single = ref(true);
+//定义多选控制模型
+const multiple = ref(true);
 
 //Vue 3 中的两种响应式数据绑定方式：reactive 和 ref
 //ref定义：基本数据类型，适用于简单的响应式数据
@@ -92,8 +150,10 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 2,
-    name: null
-  }
+    name: null,
+  },
+  //封装表单数据
+  form: {}
 });
 //toRefs 是一个Vue3中提供的API，可将一个响应式对象转换为普通对象，其中属性变成了对原始对象属性的引用
 const { queryParams } = toRefs(data);
@@ -120,6 +180,83 @@ function resetQuery() {
   queryParams.value.name = null
   handleQuery();
 }
+
+// 表单重置
+function reset() {
+  form.value = {
+    id: null,
+    name: null,
+    totalSlots: null,
+    description: null,
+    status: null,
+    remark: null
+  };
+}
+
+// 新增按钮操作
+function handleAdd() {
+  reset();
+  open.value = true;
+  title.value = "添加柜机类型";
+}
+
+// 取消按钮
+function cancel() {
+  open.value = false;
+  reset();
+}
+
+// 修改按钮操作
+function handleUpdate(row) {
+  reset();
+  const _id = row.id || ids.value
+  getCabinetType(_id).then(response => {
+    form.value = response.data;
+    open.value = true;
+    title.value = "修改柜机类型";
+  });
+}
+
+// 提交按钮
+function submitForm() {
+  if (form.value.id != null) {
+    updateCabinetType(form.value).then(response => {
+      ElMessage.success("修改成功");
+      open.value = false;
+      getList();
+    });
+  } else {
+    addCabinetType(form.value).then(response => {
+      ElMessage.success("新增成功")
+      open.value = false;
+      getList();
+    });
+  }
+}
+
+// 多选框选中数据
+function handleSelectionChange(selection) {
+  ids.value = selection.map(item => item.id);
+  single.value = selection.length != 1;
+  multiple.value = !selection.length;
+}
+
+// 删除按钮操作
+function handleDelete(row) {
+  const _ids = row.id || ids.value;
+  ElMessageBox.confirm('是否确认删除柜机类型编号为"' + _ids + '"的数据项？', "系统提示", {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: "warning",
+  }).then(function() {
+    return delCabinetType(_ids);
+  }).then(() => {
+    getList();
+    ElMessage.success("删除成功");
+  }).catch(() => {});
+}
+
+
 
 //执行查询柜机类型列表
 getList()
