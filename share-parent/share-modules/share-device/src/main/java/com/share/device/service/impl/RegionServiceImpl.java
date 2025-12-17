@@ -8,6 +8,7 @@ import com.share.device.service.IRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -31,6 +32,18 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
             });
         }
         return regionList;
+    }
+
+    @Override
+    public String getNameByCode(String code) {
+        if (StringUtils.isEmpty(code)) {
+            return "";
+        }
+        Region region = regionMapper.selectOne(new LambdaQueryWrapper<Region>().eq(Region::getCode,code).select(Region::getName));
+        if(null != region) {
+            return region.getName();
+        }
+        return "";
     }
 
 }

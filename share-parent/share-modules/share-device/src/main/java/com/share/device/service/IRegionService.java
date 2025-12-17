@@ -13,4 +13,6 @@ public interface IRegionService extends IService<Region> {
 
     List<Region> treeSelect(String parentCode);
 
+    String getNameByCode(String code);
+
 }

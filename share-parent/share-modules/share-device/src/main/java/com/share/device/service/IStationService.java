@@ -9,4 +9,8 @@ public interface IStationService extends IService<Station>
 {
 
     public List<Station> selectStationList(Station station);
+
+    int saveStation(Station station);
+
+    int updateStation(Station station);
 }
