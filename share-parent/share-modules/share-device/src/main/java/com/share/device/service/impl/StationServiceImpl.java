@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,6 +107,15 @@ public class StationServiceImpl extends ServiceImpl<StationMapper, Station> impl
         stationLocation.setLocation(new GeoJsonPoint(station.getLongitude().doubleValue(), station.getLatitude().doubleValue()));
         stationLocationRepository.save(stationLocation);
         return 1;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean removeByIds(Collection<?> list) {
+        for (Object id : list) {
+            stationLocationRepository.deleteByStationId(Long.parseLong(id.toString()));
+        }
+        return super.removeByIds(list);
     }
 
 }

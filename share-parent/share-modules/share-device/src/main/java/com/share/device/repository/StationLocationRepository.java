@@ -9,4 +9,6 @@ public interface StationLocationRepository extends MongoRepository<StationLocati
 
     StationLocation getByStationId(Long stationId);
 
+    void deleteByStationId(Long stationId);
+
 }

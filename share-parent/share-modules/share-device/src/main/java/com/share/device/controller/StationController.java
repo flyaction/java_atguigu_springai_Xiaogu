@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Tag(name = "站点接口管理")
@@ -44,6 +45,21 @@ public class StationController extends BaseController
     public AjaxResult edit(@RequestBody Station station)
     {
         return toAjax(stationService.updateStation(station));
+    }
+
+
+    @Operation(summary = "获取站点详细信息")
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(stationService.getById(id));
+    }
+
+    @Operation(summary = "删除站点")
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids)
+    {
+        return toAjax(stationService.removeBatchByIds(Arrays.asList(ids)));
     }
 
 }
