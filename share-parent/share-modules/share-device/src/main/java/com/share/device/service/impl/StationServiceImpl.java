@@ -111,6 +111,18 @@ public class StationServiceImpl extends ServiceImpl<StationMapper, Station> impl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
+    public int setData(Station station) {
+        this.updateById(station);
+
+        //更正柜机使用状态
+        Cabinet cabinet = cabinetService.getById(station.getCabinetId());
+        cabinet.setStatus("1");
+        cabinetService.updateById(cabinet);
+        return 1;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
     public boolean removeByIds(Collection<?> list) {
         for (Object id : list) {
             stationLocationRepository.deleteByStationId(Long.parseLong(id.toString()));

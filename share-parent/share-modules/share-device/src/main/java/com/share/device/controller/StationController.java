@@ -62,4 +62,11 @@ public class StationController extends BaseController
         return toAjax(stationService.removeBatchByIds(Arrays.asList(ids)));
     }
 
+    @Operation(summary = "站点设置关联数据")
+    @PostMapping("/setData")
+    public AjaxResult setData(@RequestBody Station station)
+    {
+        return toAjax(stationService.setData(station));
+    }
+
 }
