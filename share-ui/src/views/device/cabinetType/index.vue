@@ -153,10 +153,15 @@ const data = reactive({
     name: null,
   },
   //封装表单数据
-  form: {}
+  form: {},
+  rules: {
+    powerBankNo: [
+      { required: true, message: "充电宝编号不能为空", trigger: "blur" }
+    ]
+  }
 });
 //toRefs 是一个Vue3中提供的API，可将一个响应式对象转换为普通对象，其中属性变成了对原始对象属性的引用
-const { queryParams } = toRefs(data);
+const { queryParams,form,rules} = toRefs(data);
 
 /** 查询柜机类型列表 */
 function getList() {
