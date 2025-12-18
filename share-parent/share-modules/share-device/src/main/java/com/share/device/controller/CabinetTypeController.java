@@ -3,6 +3,8 @@ package com.share.device.controller;
 import com.share.common.core.web.controller.BaseController;
 import com.share.common.core.web.domain.AjaxResult;
 import com.share.common.core.web.page.TableDataInfo;
+import com.share.common.log.annotation.Log;
+import com.share.common.log.enums.BusinessType;
 import com.share.common.security.annotation.RequiresPermissions;
 import com.share.device.domain.CabinetType;
 import com.share.device.service.ICabinetTypeService;
@@ -66,6 +68,7 @@ public class CabinetTypeController extends BaseController
      * 查询柜机类型列表
      */
     @Operation(summary = "查询柜机类型列表")
+    @Log(title = "柜机类型查询", businessType = BusinessType.OTHER)
     @RequiresPermissions("device:cabinetType:list")
     @GetMapping("/list")
     public TableDataInfo list(CabinetType cabinetType)
