@@ -43,3 +43,10 @@ export function delCabinetType(id) {
         method: 'delete'
     })
 }
+
+export function getCabinetTypeList() {
+    return request({
+        url: '/device/cabinetType/getCabinetTypeList',
+        method: 'get'
+    })
+}
