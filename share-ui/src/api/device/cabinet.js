@@ -50,3 +50,10 @@ export function getAllInfo(id) {
         method: 'get'
     })
 }
+
+export function searchNoUseList(keyword) {
+    return request({
+        url: '/device/cabinet/searchNoUseList/' + keyword,
+        method: 'get'
+    })
+}
