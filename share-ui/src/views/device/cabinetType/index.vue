@@ -24,6 +24,7 @@
             @click="handleAdd"
             plain
             icon="Plus"
+            v-hasPermi="['device:cabinetType:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -31,6 +32,8 @@
             type="success"
             plain
             icon="Edit"
+            @click="handleUpdate"
+            v-hasPermi="['device:cabinetType:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -39,6 +42,7 @@
             @click="handleDelete"
             plain
             icon="Delete"
+            v-hasPermi="['device:cabinetType:remove']"
         >删除</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -58,8 +62,8 @@
       <el-table-column prop="createTime" label="创建时间" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button link type="primary" icon="Delete" :disabled="multiple" @click="handleDelete">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['device:cabinetType:edit']">修改</el-button>
+          <el-button link type="primary" icon="Delete" :disabled="multiple" @click="handleDelete" v-hasPermi="['device:cabinetType:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
