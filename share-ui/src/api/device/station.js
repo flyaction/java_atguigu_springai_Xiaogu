@@ -51,3 +51,10 @@ export function setData(data) {
         data: data
     })
 }
+
+export function nearbyStation(latitude, longitude) {
+    return request({
+        url: '/device/device/nearbyStationList/'+latitude+'/'+longitude,
+        method: 'get'
+    })
+}
