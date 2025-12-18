@@ -3,6 +3,7 @@ package com.share.device.controller;
 import com.share.common.core.web.controller.BaseController;
 import com.share.common.core.web.domain.AjaxResult;
 import com.share.common.core.web.page.TableDataInfo;
+import com.share.common.security.annotation.RequiresPermissions;
 import com.share.device.domain.CabinetType;
 import com.share.device.service.ICabinetTypeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +24,7 @@ public class CabinetTypeController extends BaseController
     private ICabinetTypeService cabinetTypeService;
 
     @Operation(summary = "获取柜机类型详细信息")
+    @RequiresPermissions("device:cabinetType:query")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -30,6 +32,7 @@ public class CabinetTypeController extends BaseController
     }
 
     @Operation(summary = "新增柜机类型")
+    @RequiresPermissions("device:cabinetType:add")
     @PostMapping
     public AjaxResult add(@RequestBody @Validated CabinetType cabinetType)
     {
@@ -37,6 +40,7 @@ public class CabinetTypeController extends BaseController
     }
 
     @Operation(summary = "删除柜机类型")
+    @RequiresPermissions("device:cabinetType:remove")
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
@@ -44,6 +48,7 @@ public class CabinetTypeController extends BaseController
     }
 
     @Operation(summary = "修改柜机类型")
+    @RequiresPermissions("device:cabinetType:edit")
     @PutMapping
     public AjaxResult edit(@RequestBody @Validated CabinetType cabinetType)
     {
@@ -61,6 +66,7 @@ public class CabinetTypeController extends BaseController
      * 查询柜机类型列表
      */
     @Operation(summary = "查询柜机类型列表")
+    @RequiresPermissions("device:cabinetType:list")
     @GetMapping("/list")
     public TableDataInfo list(CabinetType cabinetType)
     {
