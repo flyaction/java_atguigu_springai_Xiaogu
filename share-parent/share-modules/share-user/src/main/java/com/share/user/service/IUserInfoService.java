@@ -1,6 +1,8 @@
 package com.share.user.service;
 
 import java.util.List;
+
+import com.share.user.domain.UpdateUserLogin;
 import com.share.user.domain.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -21,4 +23,13 @@ public interface IUserInfoService extends IService<UserInfo>
      */
     public List<UserInfo> selectUserInfoList(UserInfo userInfo);
 
+    /**
+     * 小程序授权登录
+     *
+     * @param code
+     * @return
+     */
+    UserInfo wxLogin(String code);
+
+    Boolean updateUserLogin(UpdateUserLogin updateUserLogin);
 }

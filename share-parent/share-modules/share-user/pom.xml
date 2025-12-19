@@ -64,6 +64,18 @@
             <artifactId>share-common-log</artifactId>
         </dependency>
 
+        <!-- 微信小程序 -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.share</groupId>
+            <artifactId>share-api-user</artifactId>
+            <version>3.6.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>

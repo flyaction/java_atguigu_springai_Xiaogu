@@ -2,6 +2,12 @@ package com.share.user.controller;
 
 import java.util.List;
 import java.util.Arrays;
+
+import com.share.common.core.context.SecurityContextHolder;
+import com.share.common.core.utils.bean.BeanUtils;
+import com.share.common.security.annotation.RequiresLogin;
+import com.share.user.domain.UserVo;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -110,5 +116,16 @@ public class UserInfoController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(userInfoService.removeBatchByIds(Arrays.asList(ids)));
+    }
+
+    @Operation(summary = "获取当前登录用户信息")
+    @RequiresLogin
+    @GetMapping("/getLoginUserInfo")
+    public AjaxResult getLoginUserInfo(HttpServletRequest request) {
+        Long userId = SecurityContextHolder.getUserId();
+        UserInfo userInfo = userInfoService.getById(userId);
+        UserVo userInfoVo = new UserVo();
+        BeanUtils.copyProperties(userInfo, userInfoVo);
+        return success(userInfoVo);
     }
 }

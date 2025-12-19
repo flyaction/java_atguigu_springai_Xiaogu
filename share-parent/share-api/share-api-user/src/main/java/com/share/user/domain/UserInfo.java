@@ -1,9 +1,11 @@
 package com.share.user.domain;
 
+import com.share.common.core.annotation.Excel;
 import com.share.common.core.web.domain.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import com.share.common.core.annotation.Excel;
+
+import java.util.Date;
 
 /**
  * 用户对象 user_info
@@ -41,6 +43,16 @@ public class UserInfo extends BaseEntity
     @Excel(name = "电话")
     @Schema(description = "电话")
     private String phone;
+
+    /** 最后一次登录ip */
+    @Excel(name = "最后一次登录ip")
+    @Schema(description = "最后一次登录ip")
+    private String lastLoginIp;
+
+    /** 最后一次登录时间 */
+    @Excel(name = "最后一次登录时间")
+    @Schema(description = "最后一次登录时间")
+    private Date lastLoginTime;
 
     /** 1有效，2禁用 */
     @Excel(name = "1有效，2禁用")
