@@ -13,6 +13,7 @@
         <module>share-gen</module>
         <module>share-job</module>
         <module>share-file</module>
+        <module>share-user</module>
     </modules>
 
     <artifactId>share-modules</artifactId>
