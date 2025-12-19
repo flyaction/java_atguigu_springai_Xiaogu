@@ -1,5 +1,6 @@
 package com.share.user.domain;
 
+import com.share.common.core.web.domain.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import com.share.common.core.annotation.Excel;

@@ -3,6 +3,7 @@ package com.share.user.mapper;
 import java.util.List;
 import com.share.user.domain.UserInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 用户Mapper接口
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author atguigu
  * @date 2025-12-19
  */
+@Mapper
 public interface UserInfoMapper extends BaseMapper<UserInfo>
 {
 

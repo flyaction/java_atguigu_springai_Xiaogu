@@ -4,14 +4,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.share.user.mapper.UserInfoMapper">
 
-    <resultMap type="UserInfo" id="UserInfoResult" autoMapping="true">
+    <resultMap type="com.share.user.domain.UserInfo" id="UserInfoResult" autoMapping="true">
     </resultMap>
 
     <sql id="selectUserInfoVo">
         select id, wx_open_id, nickname, gender, avatar_url, phone, status, create_time, create_by, update_time, update_by, del_flag, remark from user_info
     </sql>
 
-    <select id="selectUserInfoList" parameterType="UserInfo" resultMap="UserInfoResult">
+    <select id="selectUserInfoList" parameterType="com.share.user.domain.UserInfo" resultMap="UserInfoResult">
         <include refid="selectUserInfoVo"/>
         <where>
             <if test="wxOpenId != null  and wxOpenId != ''"> and wx_open_id = #{wxOpenId}</if>
