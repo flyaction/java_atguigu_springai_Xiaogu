@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * @author share
  */
-@FeignClient(contextId = "remoteUserService", value = ServiceNameConstants.SHARE_USER, fallbackFactory = RemoteUserFallbackFactory.class)
+@FeignClient(contextId = "remoteUserInfoService", value = ServiceNameConstants.SHARE_USER, fallbackFactory = RemoteUserFallbackFactory.class)
 public interface RemoteUserService
 {
     @GetMapping("/userInfo/wxLogin/{code}")
