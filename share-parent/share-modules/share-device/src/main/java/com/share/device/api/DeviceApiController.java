@@ -47,4 +47,11 @@ public class DeviceApiController extends BaseController {
         return success(stationVoList);
     }
 
+    @Operation(summary = "根据id获取门店详情")
+    @RequiresLogin
+    @GetMapping("/getStation/{id}/{latitude}/{longitude}")
+    public AjaxResult getStation(@PathVariable Long id, @PathVariable String latitude, @PathVariable String longitude)
+    {
+        return success(deviceService.getStation(id, latitude, longitude));
+    }
 }
