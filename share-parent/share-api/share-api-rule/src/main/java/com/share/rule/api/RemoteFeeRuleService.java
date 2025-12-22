@@ -20,7 +20,7 @@ import java.util.List;
  * @author share
  */
 @FeignClient(contextId = "remoteFeeRuleService",
-        value = ServiceNameConstants.RULE_SERVICE,
+        name = ServiceNameConstants.RULE_SERVICE,
         fallbackFactory = RemoteFeeRuleFallbackFactory.class)
 public interface RemoteFeeRuleService
 {
