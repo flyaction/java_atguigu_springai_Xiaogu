@@ -53,7 +53,7 @@ public class H5LoginService
         loginUser.setUserid(userInfo.getId());
         loginUser.setUsername(userInfo.getWxOpenId());
         loginUser.setStatus(userInfo.getStatus()+"");
-        if ("0".equals(userInfo.getStatus()))
+        if ("2".equals(userInfo.getStatus()))
         {
             recordLogService.recordLogininfor(userInfo.getWxOpenId(), Constants.LOGIN_FAIL, "用户已停用，请联系管理员");
             throw new ServiceException("对不起，您的账号：" + userInfo.getWxOpenId() + " 已停用");
