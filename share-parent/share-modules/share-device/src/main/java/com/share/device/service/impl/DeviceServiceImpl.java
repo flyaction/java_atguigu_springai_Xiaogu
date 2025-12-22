@@ -1,6 +1,11 @@
 package com.share.device.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.share.common.core.domain.R;
+import com.share.device.service.IMapService;
+import com.share.rule.api.RemoteFeeRuleService;
+import com.share.rule.domain.FeeRule;
+import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import com.share.device.domain.Cabinet;
 import com.share.device.domain.Station;
@@ -40,6 +45,12 @@ public class DeviceServiceImpl implements IDeviceService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Resource
+    private RemoteFeeRuleService remoteFeeRuleService;
+
+    @Resource
+    private IMapService mapService;
+
     @Override
     public List<StationVo> nearbyStation(String latitude, String longitude, Integer radius) {
         //坐标，确定中心点
@@ -69,6 +80,10 @@ public class DeviceServiceImpl implements IDeviceService {
             StationVo stationVo = new StationVo();
             BeanUtils.copyProperties(item, stationVo);
 
+            // 计算距离
+            Double distanceStation = mapService.calculateDistance(longitude, latitude, item.getLongitude().toString(), item.getLatitude().toString());
+            stationVo.setDistance(distanceStation);
+
             // 获取柜机信息
             Cabinet cabinet = cabinetIdToCabinetMap.get(item.getCabinetId());
             //可用充电宝数量大于0，可借用
@@ -83,6 +98,10 @@ public class DeviceServiceImpl implements IDeviceService {
             } else {
                 stationVo.setIsReturn("0");
             }
+
+            // 获取费用规则
+            R<FeeRule> feeRuleResult = remoteFeeRuleService.getFeeRule(item.getFeeRuleId());
+            stationVo.setFeeRule(feeRuleResult.getData().getDescription());
 
             stationVoList.add(stationVo);
         });
