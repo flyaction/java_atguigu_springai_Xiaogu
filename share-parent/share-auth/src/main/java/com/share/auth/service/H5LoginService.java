@@ -1,13 +1,12 @@
 package com.share.auth.service;
 
+import com.share.user.api.RemoteUserInfoService;
 import com.share.user.domain.UserInfo;
 import com.share.common.core.constant.Constants;
-import com.share.common.core.constant.SecurityConstants;
 import com.share.common.core.domain.R;
 import com.share.common.core.exception.ServiceException;
 import com.share.common.core.utils.StringUtils;
 import com.share.common.core.utils.ip.IpUtils;
-import com.share.user.api.RemoteUserService;
 import com.share.system.api.model.LoginUser;
 import com.share.user.domain.UpdateUserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.Date;
 public class H5LoginService
 {
     @Autowired
-    private RemoteUserService remoteUserService;
+    private RemoteUserInfoService remoteUserInfoService;
 
     @Autowired
     private SysRecordLogService recordLogService;
@@ -36,7 +35,7 @@ public class H5LoginService
             throw new ServiceException("微信code必须填写");
         }
         // 查询用户信息
-        R<UserInfo> userResult = remoteUserService.wxLogin(code);
+        R<UserInfo> userResult = remoteUserInfoService.wxLogin(code);
 
         if (StringUtils.isNull(userResult) || StringUtils.isNull(userResult.getData()))
         {
@@ -65,7 +64,7 @@ public class H5LoginService
         updateUserLogin.setUserId(userInfo.getId());
         updateUserLogin.setLastLoginIp(IpUtils.getIpAddr());
         updateUserLogin.setLastLoginTime(new Date());
-        remoteUserService.updateUserLogin(updateUserLogin);
+        remoteUserInfoService.updateUserLogin(updateUserLogin);
         return loginUser;
     }
 }

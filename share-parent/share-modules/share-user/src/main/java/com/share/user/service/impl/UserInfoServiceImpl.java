@@ -50,6 +50,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public UserInfo wxLogin(String code) {
+        System.out.println(1111);
         String openId = null;
         try {
             //获取openId

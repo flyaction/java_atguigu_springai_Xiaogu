@@ -1,8 +1,7 @@
 package com.share.user.factory;
 
 import com.share.common.core.domain.R;
-import com.share.common.core.exception.ServiceException;
-import com.share.user.api.RemoteUserService;
+import com.share.user.api.RemoteUserInfoService;
 import com.share.user.domain.UpdateUserLogin;
 import com.share.user.domain.UserInfo;
 import org.slf4j.Logger;
@@ -16,15 +15,15 @@ import org.springframework.stereotype.Component;
  * @author share
  */
 @Component
-public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserService>
+public class RemoteUserInfoFallbackFactory implements FallbackFactory<RemoteUserInfoService>
 {
-    private static final Logger log = LoggerFactory.getLogger(RemoteUserFallbackFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(RemoteUserInfoFallbackFactory.class);
 
     @Override
-    public RemoteUserService create(Throwable throwable)
+    public RemoteUserInfoService create(Throwable throwable)
     {
         log.error("用户服务调用失败:{}", throwable.getMessage());
-        return new RemoteUserService()
+        return new RemoteUserInfoService()
         {
             @Override
             public R<UserInfo> wxLogin(String code) {
