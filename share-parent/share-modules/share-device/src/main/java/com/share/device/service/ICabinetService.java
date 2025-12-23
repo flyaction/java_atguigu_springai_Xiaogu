@@ -20,4 +20,6 @@ public interface ICabinetService extends IService<Cabinet>
     List<Cabinet> searchNoUseList(String keyword);
 
     Map<String, Object> getAllInfo(Long id);
+
+    Cabinet getBtCabinetNo(String cabinetNo);
 }

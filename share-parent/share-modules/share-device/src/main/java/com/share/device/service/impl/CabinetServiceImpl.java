@@ -159,4 +159,9 @@ public class CabinetServiceImpl extends ServiceImpl<CabinetMapper, Cabinet> impl
         Map<String, Object> result = Map.of("cabinet", cabinet, "cabinetSlotList", cabinetSlotList);
         return result;
     }
+
+    @Override
+    public Cabinet getBtCabinetNo(String cabinetNo) {
+        return cabinetMapper.selectOne(new LambdaQueryWrapper<Cabinet>().eq(Cabinet::getCabinetNo, cabinetNo));
+    }
 }
