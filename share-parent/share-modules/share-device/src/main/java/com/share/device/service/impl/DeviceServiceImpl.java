@@ -32,10 +32,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -217,6 +214,17 @@ public class DeviceServiceImpl implements IDeviceService {
 
         scanChargeVo.setStatus("1");
         return scanChargeVo;
+    }
+
+    @Override
+    public void unlockSlot(CabinetSlot cs) {
+        CabinetSlot cabinetSlot = cabinetSlotService.getById(cs.getId());
+        if("2".equals(cabinetSlot.getStatus())) {
+            //状态（1：占用 0：空闲 2：锁定）
+            cabinetSlot.setStatus("1");
+            cabinetSlot.setUpdateTime(new Date());
+            cabinetSlotService.updateById(cabinetSlot);
+        }
     }
 
     /**

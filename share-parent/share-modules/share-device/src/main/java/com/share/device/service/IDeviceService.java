@@ -1,5 +1,6 @@
 package com.share.device.service;
 
+import com.share.device.domain.CabinetSlot;
 import com.share.device.domain.ScanChargeVo;
 import com.share.device.domain.StationVo;
 
@@ -13,4 +14,6 @@ public interface IDeviceService
     StationVo getStation(Long id, String latitude, String longitude);
 
     ScanChargeVo scanCharge(String cabinetNo);
+
+    void unlockSlot(CabinetSlot cabinetSlot);
 }
