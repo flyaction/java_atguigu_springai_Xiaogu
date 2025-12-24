@@ -22,5 +22,8 @@ public interface RemoteUserInfoService
     @PutMapping("/userInfo/updateUserLogin")
     public R<Boolean> updateUserLogin(@RequestBody UpdateUserLogin updateUserLogin);
 
+    @GetMapping(value = "/userInfo/getUserInfo/{id}")
+    public R<UserInfo> getInfo(@PathVariable("id") Long id);
+
 
 }

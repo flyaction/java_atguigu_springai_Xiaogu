@@ -35,6 +35,11 @@ public class RemoteUserInfoFallbackFactory implements FallbackFactory<RemoteUser
                 return R.fail("更新用户登录失败:" + throwable.getMessage());
             }
 
+            @Override
+            public R<UserInfo> getInfo(Long id) {
+                return R.fail("获取用户信息失败:" + throwable.getMessage());
+            }
+
         };
     }
 }
