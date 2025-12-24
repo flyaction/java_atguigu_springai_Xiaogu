@@ -70,13 +70,10 @@ public class PowerBankUnlockHandler implements MassageHandler {
         String messageNo = message.getString("mNo");
         //基于redis实现重复提交 setnx方法
         String key = "powerBank:unlock:"+messageNo;
-        Boolean ifAbsent =
-                redisTemplate.opsForValue().setIfAbsent(key, messageNo,
-                        1, TimeUnit.HOURS);
+        Boolean ifAbsent = redisTemplate.opsForValue().setIfAbsent(key, messageNo, 1, TimeUnit.HOURS);
         if(!ifAbsent) {
             return;
         }
-
         //2 获取柜机编号cabinetNo、充电宝编号powerBankNo、插槽编号slotNo
         // 用户id：userId，非空判断
         //柜机编号
@@ -141,9 +138,7 @@ public class PowerBankUnlockHandler implements MassageHandler {
         submitOrderVo.setStartCabinetNo(cabinetNo);
         submitOrderVo.setFeeRuleId(station.getFeeRuleId());
         //发送mq消息
-        rabbitService.sendMessage(MqConst.EXCHANGE_ORDER,
-                MqConst.ROUTING_SUBMIT_ORDER,
-                JSONObject.toJSONString(submitOrderVo));
+        rabbitService.sendMessage(MqConst.EXCHANGE_ORDER, MqConst.ROUTING_SUBMIT_ORDER, JSONObject.toJSONString(submitOrderVo));
     }
 }
 
