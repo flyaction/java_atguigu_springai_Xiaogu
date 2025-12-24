@@ -1,12 +1,18 @@
 package com.share.user.api;
 
+import com.share.common.core.context.SecurityContextHolder;
 import com.share.common.core.domain.R;
+import com.share.common.core.utils.bean.BeanUtils;
 import com.share.common.core.web.controller.BaseController;
+import com.share.common.core.web.domain.AjaxResult;
 import com.share.common.security.annotation.InnerAuth;
+import com.share.common.security.annotation.RequiresLogin;
 import com.share.user.domain.UpdateUserLogin;
 import com.share.user.domain.UserInfo;
+import com.share.user.domain.UserVo;
 import com.share.user.service.IUserInfoService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,5 +36,23 @@ public class UserInfoApiController extends BaseController {
     public R<Boolean> updateUserLogin(@RequestBody UpdateUserLogin updateUserLogin)
     {
         return R.ok(userInfoService.updateUserLogin(updateUserLogin));
+    }
+
+    @Operation(summary = "获取当前登录用户信息")
+    @RequiresLogin
+    @GetMapping("/getLoginUserInfo")
+    public AjaxResult getLoginUserInfo(HttpServletRequest request) {
+        Long userId = SecurityContextHolder.getUserId();
+        UserInfo userInfo = userInfoService.getById(userId);
+        UserVo userInfoVo = new UserVo();
+        BeanUtils.copyProperties(userInfo, userInfoVo);
+        return success(userInfoVo);
+    }
+
+    @Operation(summary = "是否免押金")
+    @RequiresLogin
+    @GetMapping("/isFreeDeposit")
+    public AjaxResult isFreeDeposit() {
+        return success(userInfoService.isFreeDeposit());
     }
 }

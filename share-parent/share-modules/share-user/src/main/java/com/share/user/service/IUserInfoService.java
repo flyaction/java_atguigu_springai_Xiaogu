@@ -32,4 +32,6 @@ public interface IUserInfoService extends IService<UserInfo>
     UserInfo wxLogin(String code);
 
     Boolean updateUserLogin(UpdateUserLogin updateUserLogin);
+
+    Boolean isFreeDeposit();
 }

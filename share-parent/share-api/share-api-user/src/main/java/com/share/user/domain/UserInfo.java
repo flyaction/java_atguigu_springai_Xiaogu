@@ -54,6 +54,10 @@ public class UserInfo extends BaseEntity
     @Schema(description = "最后一次登录时间")
     private Date lastLoginTime;
 
+    @Excel(name = "押金状态")
+    @Schema(description = "押金状态（0：未验证 1：免押金 2：已交押金）")
+    private String depositStatus;
+
     /** 1有效，2禁用 */
     @Excel(name = "1有效，2禁用")
     @Schema(description = "1有效，2禁用")
