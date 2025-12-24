@@ -3,7 +3,6 @@ package com.share.device.emqx.handler.impl;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.share.common.core.constant.DeviceConstants;
-import com.share.common.core.constant.SecurityConstants;
 import com.share.common.core.utils.StringUtils;
 import com.share.common.rabbit.constant.MqConst;
 import com.share.common.rabbit.service.RabbitService;
@@ -71,8 +70,7 @@ public class PowerBankConnectedHandler implements MassageHandler {
         //1 获取messageNo，防止重复提交
         String messageNo = message.getString("mNo");
         String key = "powerBank:connected:" + messageNo;
-        Boolean ifAbsent =
-                redisTemplate.opsForValue().setIfAbsent(key, messageNo, 1, TimeUnit.HOURS);
+        Boolean ifAbsent = redisTemplate.opsForValue().setIfAbsent(key, messageNo, 1, TimeUnit.HOURS);
         if(!ifAbsent) {
             return;
         }
@@ -147,9 +145,7 @@ public class PowerBankConnectedHandler implements MassageHandler {
         endOrderVo.setEndStationName(station.getName());
         endOrderVo.setPowerBankNo(powerBankNo);
 
-        rabbitService.sendMessage(MqConst.EXCHANGE_ORDER,
-                MqConst.ROUTING_END_ORDER,
-                JSONObject.toJSONString(endOrderVo));
+        rabbitService.sendMessage(MqConst.EXCHANGE_ORDER, MqConst.ROUTING_END_ORDER, JSONObject.toJSONString(endOrderVo));
     }
 }
 
