@@ -10,8 +10,6 @@ import com.share.device.service.impl.StationServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,4 +52,12 @@ public class DeviceApiController extends BaseController {
     {
         return success(deviceService.getStation(id, latitude, longitude));
     }
+
+    @Operation(summary = "扫码充电")
+    @RequiresLogin
+    @GetMapping("scanCharge/{cabinetNo}")
+    public AjaxResult scanCharge(@PathVariable String cabinetNo) {
+        return success(deviceService.scanCharge(cabinetNo));
+    }
+
 }
