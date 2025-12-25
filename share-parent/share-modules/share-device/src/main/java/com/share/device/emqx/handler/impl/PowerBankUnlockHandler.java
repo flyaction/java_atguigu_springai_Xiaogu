@@ -53,12 +53,15 @@ public class PowerBankUnlockHandler implements MassageHandler {
      * 充电宝弹出后续处理
      * 处理消息:
      * @param message
-     * {"messageNo":"7777","slotNo":"1","userId":1,
-     * "cabinetNo":"xgxgxxxg","powerBankNo":"gg001"}
+     * {"pNo":"cdb001","uId":3,"cNo":"gj001","sNo":"1","mNo":"mmqhr70pns"}
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void handleMessage(JSONObject message) {
+        if (message == null) {
+            log.error("接收到的 message 为 null");
+            return;
+        }
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {

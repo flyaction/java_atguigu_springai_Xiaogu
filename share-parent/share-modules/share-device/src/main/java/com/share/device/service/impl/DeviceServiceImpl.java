@@ -212,6 +212,12 @@ public class DeviceServiceImpl implements IDeviceService {
         String topic = String.format(EmqxConstants.TOPIC_SCAN_SUBMIT, cabinetNo);
         emqxClientWrapper.publish(topic, object.toJSONString());
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         scanChargeVo.setStatus("1");
         return scanChargeVo;
     }
