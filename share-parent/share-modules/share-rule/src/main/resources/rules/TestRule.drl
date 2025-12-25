@@ -1,0 +1,8 @@
+package  com.share.rules
+
+rule "rule_1"
+    when
+       eval(true)
+    then
+       System.out.println("规则执行了。");
+end
