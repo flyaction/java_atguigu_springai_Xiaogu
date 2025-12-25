@@ -55,4 +55,11 @@ public class UserInfoApiController extends BaseController {
     public AjaxResult isFreeDeposit() {
         return success(userInfoService.isFreeDeposit());
     }
+
+    @Operation(summary = "获取用户详细信息")
+    @GetMapping(value = "/getUserInfo/{id}")
+    public R<UserInfo> getInfo(@PathVariable("id") Long id) {
+        UserInfo userInfo = userInfoService.getById(id);
+        return R.ok(userInfo);
+    }
 }
