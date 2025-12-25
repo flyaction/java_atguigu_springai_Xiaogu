@@ -1,34 +1,22 @@
 package com.share.user.controller;
 
-import java.util.List;
-import java.util.Arrays;
-
-import com.share.common.core.context.SecurityContextHolder;
-import com.share.common.core.utils.bean.BeanUtils;
-import com.share.common.security.annotation.RequiresLogin;
-import com.share.user.domain.UserVo;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.share.common.core.utils.poi.ExcelUtil;
+import com.share.common.core.web.controller.BaseController;
+import com.share.common.core.web.domain.AjaxResult;
+import com.share.common.core.web.page.TableDataInfo;
 import com.share.common.log.annotation.Log;
 import com.share.common.log.enums.BusinessType;
 import com.share.common.security.annotation.RequiresPermissions;
 import com.share.user.domain.UserInfo;
 import com.share.user.service.IUserInfoService;
-import com.share.common.core.web.controller.BaseController;
-import com.share.common.core.web.domain.AjaxResult;
-import com.share.common.core.utils.poi.ExcelUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.share.common.core.web.page.TableDataInfo;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 用户Controller
@@ -118,14 +106,14 @@ public class UserInfoController extends BaseController
         return toAjax(userInfoService.removeBatchByIds(Arrays.asList(ids)));
     }
 
-    @Operation(summary = "获取当前登录用户信息")
-    @RequiresLogin
-    @GetMapping("/getLoginUserInfo")
-    public AjaxResult getLoginUserInfo(HttpServletRequest request) {
-        Long userId = SecurityContextHolder.getUserId();
-        UserInfo userInfo = userInfoService.getById(userId);
-        UserVo userInfoVo = new UserVo();
-        BeanUtils.copyProperties(userInfo, userInfoVo);
-        return success(userInfoVo);
-    }
+//    @Operation(summary = "获取当前登录用户信息")
+//    @RequiresLogin
+//    @GetMapping("/getLoginUserInfo")
+//    public AjaxResult getLoginUserInfo(HttpServletRequest request) {
+//        Long userId = SecurityContextHolder.getUserId();
+//        UserInfo userInfo = userInfoService.getById(userId);
+//        UserVo userInfoVo = new UserVo();
+//        BeanUtils.copyProperties(userInfo, userInfoVo);
+//        return success(userInfoVo);
+//    }
 }
