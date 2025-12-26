@@ -8,6 +8,7 @@ import com.share.order.domain.EndOrderVo;
 import com.share.order.domain.SubmitOrderVo;
 import com.share.order.service.IOrderInfoService;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Slf4j
 public class OrderReceiver {
 
     @Autowired
@@ -84,6 +86,7 @@ public class OrderReceiver {
     public void processPaySucess(String orderNo, Message message, Channel channel) {
         //业务处理
         if (StringUtils.isNotEmpty(orderNo)) {
+            log.info("[订单服务]监听订单支付成功消息：{}", orderNo);
             //更改订单支付状态
             orderInfoService.processPaySucess(orderNo);
         }
