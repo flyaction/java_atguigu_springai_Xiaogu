@@ -1,7 +1,7 @@
 package com.share.device.emqx.callback;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.share.device.emqx.ProtocolConvertUtil;
+import com.share.device.emqx.JsonConvertUtil;
 import com.share.device.emqx.factory.MessageHandlerFactory;
 import com.share.device.emqx.handler.MassageHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class OnMessageCallback implements MqttCallback {
             // 根据主题选择不同的处理逻辑
             MassageHandler massageHandler = messageHandlerFactory.getMassageHandler(topic);
             if(null != massageHandler) {
-                JSONObject jsonMessage = ProtocolConvertUtil.convertJson(new String(message.getPayload()));
+                JSONObject jsonMessage = JsonConvertUtil.convertJson(new String(message.getPayload()));
                 if (jsonMessage != null) {
                     massageHandler.handleMessage(jsonMessage);
                 } else {
