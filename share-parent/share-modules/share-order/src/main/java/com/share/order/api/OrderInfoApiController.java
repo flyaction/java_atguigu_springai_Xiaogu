@@ -48,8 +48,7 @@ public class OrderInfoApiController extends BaseController
                               @PathVariable Integer pageSize) {
         //设置分页参数
         PageHelper.startPage(pageNum,pageSize);
-        List<OrderInfo> list =
-                orderInfoService.selectOrderListByUserId(SecurityContextHolder.getUserId());
+        List<OrderInfo> list = orderInfoService.selectOrderListByUserId(SecurityContextHolder.getUserId());
         TableDataInfo dataTable = getDataTable(list);
         return dataTable;
     }
