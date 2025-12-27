@@ -13,7 +13,7 @@ import com.share.payment.service.IWxPayService;
 import com.share.payment.util.RequestUtils;
 import com.share.user.api.RemoteUserInfoService;
 import com.share.user.domain.UserInfo;
-import com.wechat.pay.java.core.RSAAutoCertificateConfig;
+import com.wechat.pay.java.core.RSAPublicKeyConfig;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.notification.NotificationParser;
 import com.wechat.pay.java.core.notification.RequestParam;
@@ -41,8 +41,13 @@ public class WxPayServiceImpl implements IWxPayService {
    @Autowired
    private WxPayV3Properties wxPayV3Properties;
 
+//   @Autowired
+//   private RSAAutoCertificateConfig rsaAutoCertificateConfig;
+
    @Autowired
-   private RSAAutoCertificateConfig rsaAutoCertificateConfig;
+   private RSAPublicKeyConfig rsaPublicKeyConfig;
+
+
 
    @Override
    public WxPrepayVo createWxPayment(CreateWxPaymentForm createWxPaymentForm) {
@@ -61,7 +66,7 @@ public class WxPayServiceImpl implements IWxPayService {
          String openid = userInfoResult.getData().getWxOpenId();
 
          // 构建service
-         JsapiServiceExtension service = new JsapiServiceExtension.Builder().config(rsaAutoCertificateConfig).build();
+         JsapiServiceExtension service = new JsapiServiceExtension.Builder().config(rsaPublicKeyConfig).build();
 
          // request.setXxx(val)设置所需参数，具体参数可见Request定义
          PrepayRequest request = new PrepayRequest();
@@ -133,7 +138,7 @@ public class WxPayServiceImpl implements IWxPayService {
 
 
       //3.初始化 NotificationParser
-      NotificationParser parser = new NotificationParser(rsaAutoCertificateConfig);
+      NotificationParser parser = new NotificationParser(rsaPublicKeyConfig);
       //4.以支付通知回调为例，验签、解密并转换成 Transaction
       Transaction transaction = parser.parse(requestParam, Transaction.class);
       log.info("成功解析：{}", JSON.toJSONString(transaction));
@@ -146,7 +151,7 @@ public class WxPayServiceImpl implements IWxPayService {
    @Override
    public Transaction queryPayStatus(String orderNo) {
       // 构建service
-      JsapiServiceExtension service = new JsapiServiceExtension.Builder().config(rsaAutoCertificateConfig).build();
+      JsapiServiceExtension service = new JsapiServiceExtension.Builder().config(rsaPublicKeyConfig).build();
 
       QueryOrderByOutTradeNoRequest queryRequest = new QueryOrderByOutTradeNoRequest();
       queryRequest.setMchid(wxPayV3Properties.getMerchantId());

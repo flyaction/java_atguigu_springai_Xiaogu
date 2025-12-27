@@ -40,7 +40,7 @@
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <lombok.version>1.18.30</lombok.version>
         <redisson.version>3.23.3</redisson.version>
-        <wxpay.version>0.2.11</wxpay.version>
+        <wxpay.version>0.2.17</wxpay.version>
         <weixin.miniapp.version>4.5.5.B</weixin.miniapp.version>
         <drools.version>8.41.0.Final</drools.version>
         <mqttv3.version>1.2.2</mqttv3.version>
