@@ -1,0 +1,56 @@
+services:
+  minio:
+    image: quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z
+    container_name: minio
+    command: server /data --console-address ":9090"
+    environment:
+      MINIO_ROOT_USER: minioadmin  # 默认管理员用户名
+      MINIO_ROOT_PASSWORD: minioadmin  # 默认管理员密码
+    ports:
+      - "9001:9000"  # API 端口
+      - "9090:9090"  # 控制台端口
+    volumes:
+      - minio_data:/data  # 持久化存储
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3.12.0-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"  # AMQP 协议端口
+      - "15672:15672"  # 管理界面端口
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest  
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped  
+
+  mongodb:
+    image: mongo:7.0.0
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  emqx:
+    image: emqx/emqx:5.7.0
+    container_name: emqx
+    ports:
+      - "1883:1883"
+      - "8083:8083"
+      - "8084:8084"
+      - "8883:8883"
+      - "18083:18083"
+    volumes:
+      - emqx_data:/opt/emqx/data 
+      - emqx_log:/opt/emqx/log      
+
+volumes:
+  minio_data:
+  rabbitmq_data:
+  mongodb_data:
+  emqx_data:
+  emqx_log: 
