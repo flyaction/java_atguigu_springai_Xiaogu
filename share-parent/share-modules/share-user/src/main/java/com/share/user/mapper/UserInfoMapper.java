@@ -1,9 +1,11 @@
 package com.share.user.mapper;
 
-import java.util.List;
-import com.share.user.domain.UserInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.share.user.domain.UserCountVo;
+import com.share.user.domain.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 用户Mapper接口
@@ -23,4 +25,9 @@ public interface UserInfoMapper extends BaseMapper<UserInfo>
      */
     public List<UserInfo> selectUserInfoList(UserInfo userInfo);
 
+    /**
+     * 获取用户统计信息
+     * @return
+     */
+    List<UserCountVo> selectUserCount();
 }

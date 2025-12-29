@@ -16,6 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/userInfo")
 public class UserInfoApiController extends BaseController {
@@ -61,5 +63,11 @@ public class UserInfoApiController extends BaseController {
     public R<UserInfo> getInfo(@PathVariable("id") Long id) {
         UserInfo userInfo = userInfoService.getById(id);
         return R.ok(userInfo);
+    }
+
+    @GetMapping(value = "/getUserCount")
+    public R<Map<String, Object>> getUserCount() {
+        Map<String, Object> map = userInfoService.getUserCount();
+        return R.ok(map);
     }
 }

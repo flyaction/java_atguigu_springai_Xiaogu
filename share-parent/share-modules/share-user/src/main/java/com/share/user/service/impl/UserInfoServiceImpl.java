@@ -1,7 +1,5 @@
 package com.share.user.service.impl;
 
-import java.util.List;
-
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -9,14 +7,20 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.share.common.core.context.SecurityContextHolder;
 import com.share.common.core.exception.ServiceException;
 import com.share.user.domain.UpdateUserLogin;
+import com.share.user.domain.UserCountVo;
+import com.share.user.domain.UserInfo;
 import com.share.user.domain.UserLoginLog;
+import com.share.user.mapper.UserInfoMapper;
 import com.share.user.mapper.UserLoginLogMapper;
+import com.share.user.service.IUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.share.user.mapper.UserInfoMapper;
-import com.share.user.domain.UserInfo;
-import com.share.user.service.IUserInfoService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 用户Service业务层处理
@@ -99,6 +103,20 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         userInfo.setDepositStatus("1");
         this.updateById(userInfo);
         return true;
+    }
+
+    @Override
+    public Map<String, Object> getUserCount() {
+        List<UserCountVo> list = baseMapper.selectUserCount();
+
+        Map<String, Object> map = new HashMap<>();
+        //日期列表
+        List<String> dateList = list.stream().map(UserCountVo::getRegisterDate).collect(Collectors.toList());
+        //统计列表
+        List<Integer> countList = list.stream().map(UserCountVo::getCount).collect(Collectors.toList());
+        map.put("dateList", dateList);
+        map.put("countList", countList);
+        return map;
     }
 
 

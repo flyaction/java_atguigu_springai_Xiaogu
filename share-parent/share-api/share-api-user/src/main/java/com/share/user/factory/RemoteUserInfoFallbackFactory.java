@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * 用户服务降级处理
  *
@@ -38,6 +40,11 @@ public class RemoteUserInfoFallbackFactory implements FallbackFactory<RemoteUser
             @Override
             public R<UserInfo> getInfo(Long id) {
                 return R.fail("获取用户信息失败:" + throwable.getMessage());
+            }
+
+            @Override
+            public R<Map<String, Object>> getUserCount() {
+                return R.fail("统计用户注册数据失败:" + throwable.getMessage());
             }
 
         };

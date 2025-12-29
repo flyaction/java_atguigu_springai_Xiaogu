@@ -2,6 +2,7 @@ package com.share.order.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.share.order.domain.OrderInfo;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
  * @author atguigu
  * @date 2024-10-25
  */
+@Mapper
 public interface OrderInfoMapper extends BaseMapper<OrderInfo>
 {
 
