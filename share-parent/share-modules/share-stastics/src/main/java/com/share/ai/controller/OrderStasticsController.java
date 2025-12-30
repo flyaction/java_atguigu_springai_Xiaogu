@@ -26,13 +26,16 @@ public class OrderStasticsController extends BaseController {
     @Autowired
     private RemoteOrderInfoService remoteOrderInfoService;
 
+    /**
+     * test : message=要查询2024年每个月的订单数量
+     * @param message
+     * @return
+     */
     @GetMapping("/orderData")
     public AjaxResult getOrderData(@RequestParam(value = "message",defaultValue = "hello")
                                        String message) {
         // restTemplate调用ai模块根据需求得到生成sql语句
-        String sql =
-                restTemplate.getForObject("http://localhost:8899/ai/generateSql?message=" + message,
-                String.class);
+        String sql = restTemplate.getForObject("http://localhost:8899/ai/generateSql?message=" + message, String.class);
         //远程调用
         //根据sql获取报表数据
         OrderSqlVo orderSqlVo = new OrderSqlVo();
