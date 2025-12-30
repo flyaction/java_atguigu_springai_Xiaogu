@@ -12,7 +12,7 @@ public class ChatDeepSeekController {
     @Autowired
     private OpenAiChatModel chatModel;
 
-    @GetMapping("/ai/generate")
+    @GetMapping("/ai/generateSql")
     public String generate(@RequestParam(value = "message", defaultValue = "hello")
                            String message) {
         String data ="需求："+message+"\n" +
